@@ -1,0 +1,8 @@
+
+# IntelliJ
+/.idea/
+*.iml
+
+# C
+/obj/
+/test/test.c

@@ -1,0 +1,11 @@
+= C project
+
+== Unit Test
+
+link:http://eradman.com/posts/tdd-in-c.html[Test-Driven Development in C] Eric Radman - 2018
+
+link:http://www.drdobbs.com/testing/unit-testing-in-c-tools-and-conventions/240156344[Unit Testing in C: Tools and Conventions] 2013
+
+link:https://www.youtube.com/watch?v=z-uWt5wVVkU[You Can't Unit Test C, Right?] Benno Rice - LinuxConfAu - 2018 - 23"
+
+link:https://www.youtube.com/watch?v=zW_HyDTPjO0[Writing unit tests for C code in Python] Alexander Steffen - EuroPython Conference - 2016 - 26"
