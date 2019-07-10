@@ -1,27 +1,68 @@
 #!/usr/bin/env bash
 
-# https://hub.docker.com/_/gcc/
 
-#docker build -t my-gcc-app .
-#docker run -it --rm --name my-running-app my-gcc-app
-
-
-function old () {
-    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 gcc -o myapp myapp.c
-    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 ./myapp
-
-    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 gcc -o myapp.test myapp.test.c
-    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 ./myapp.test
+function write() {
+    TEXT=$1
+    sed -i "s/RUN_TESTS()/${TEXT}RUN_TESTS()/g" $TEST_FILE
 }
 
+function writeln() {
+    write "$1\\n"
+}
 
-TESTNAME=$1
-docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 make clean
-docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 make all
+function write_tests() {
+    grep "TEST " $TEST_FILE | while read -r test ; do
+        tmp=${test}
+        tmp=${tmp/TEST int /}
+        tmp=${tmp/TEST void /}
+        tmp=${tmp/\(\) {/}
+        writeln "    _verifyWithName(${tmp}, \"${tmp}\");"
+    done
 
-echo "Run $TESTNAME"
-docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 ./obj/$TESTNAME.o
+}
+
+function build_test_file() {
+
+    echo "Build program for file $1"
+
+    TEST_FILE=$2
+
+    cp $1 $TEST_FILE
+    tests=$(grep "TEST " $TEST_FILE)s
+
+    writeln "int main(int argc, char **argv) { "
+    write_tests
+    writeln "    return reportTests();"
+    writeln "}"
+    writeln ""
+}
+
+function onDocker() {
+    command=$@
+    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 $command
+}
+
+rm -rf progtest
+mkdir progtest
+rm -rf objtest
+mkdir objtest
+
+for test in "$@"
+do
+    build_test_file test/$test.test.c progtest/$test.test.c
+done
 
 
-# With command make
-#docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 make
+onDocker make clean
+#onDocker make all
+#onDocker make test
+onDocker make alltests
+
+for test in "$@"
+do
+    echo "=================="
+    echo "Run $test.test.o"
+    echo "------------------"
+    onDocker ./objtest/$test.test.o
+done
+

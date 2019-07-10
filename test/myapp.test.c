@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include "../include/myapp.h"
 
+/*
+Simple test with assert.
+*/
+
 static void test_something(void)
 {
     printf("test_something");

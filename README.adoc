@@ -9,3 +9,36 @@ link:http://www.drdobbs.com/testing/unit-testing-in-c-tools-and-conventions/2401
 link:https://www.youtube.com/watch?v=z-uWt5wVVkU[You Can't Unit Test C, Right?] Benno Rice - LinuxConfAu - 2018 - 23"
 
 link:https://www.youtube.com/watch?v=zW_HyDTPjO0[Writing unit tests for C code in Python] Alexander Steffen - EuroPython Conference - 2016 - 26"
+
+
+== Framework
+
+To run a test, call
+
+[source,sh]
+----
+. ./run.sh TESTNAME
+----
+
+File executed will be ./test/TESTNAME.test.c
+
+This file is copied to file ./test/test.c.
+It's modified to add a generated main() method that launch all tests present in file.
+
+To reference a test method, the method declaration should start by TEST.
+
+[source, c]
+----
+TEST void square_5_should_be_25() {
+    _assert(square(5) == 25);
+}
+----
+
+
+File test.h contains some #DEFINE and method to execute a test and display result.
+This file need to be include to the test file.
+
+make all build all source files and test files.
+
+make test build all source files and only file test.c
+

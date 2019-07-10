@@ -3,15 +3,18 @@
 
 int tests_run = 0;
 int tests_failed = 0;
+int isFailed=0;
 
-#define FAIL() tests_failed++;printf("\nFailure in %s() line %d\n", __func__, __LINE__)
+#define FAIL() tests_failed++;isFailed=1;printf("Failure in %s() line %d", __func__, __LINE__)
 #define _assert(test) do { if (!(test)) { FAIL(); return; } } while(0)
 #define _verify(test) do { tests_run++; test(); } while(0)
+#define _verifyWithName(test, name) do { tests_run++; isFailed=0; printf("%s: ", name); test(); printf("%s\n", isFailed?"":"Ok");} while(0)
 #define TEST
 
-#define RUN_TESTS() int main(int argc, char **argv) { all_tests(); return runTests(); }
+/*void all_tests() {} int main(int argc, char **argv) { all_tests(); return runTests(); }*/
+#define RUN_TESTS()
 
-int runTests() {
+int reportTests() {
     printf("-------------\n");
     if (tests_failed == 0)
     {
