@@ -36,6 +36,7 @@ $(OUT_PATH)/%.o: $(TEST_PATH)/%.c
 
 
 
+#############
 
 PROG_TEST_PATH=progtest
 PROG_TESTS = $(wildcard $(PROG_TEST_PATH)/*.c)
@@ -46,6 +47,15 @@ alltests: $(SRC_COMPILED) $(PROG_TEST_COMPILED)
 
 $(PROG_OUT_PATH)/%.o: $(PROG_TEST_PATH)/%.c
 	$(CC) $(CFLAGS) -o $@ $(SRC_COMPILED) $<
+
+#################
+
+callPython: $(OUT_PATH)/callPython.o
+
+$(OUT_PATH)/%.o: $(SRC_PATH)/%.c
+	$(CC) $(CFLAGS) -I/usr/include/python2.7 -lpython2.7 -o $@  $<
+
+
 
 clean:
 	rm -f $(OUT_PATH)/*
