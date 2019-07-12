@@ -1,6 +1,96 @@
 = C project
 
-== Unit Test
+This project show how to make some tests on C code.
+
+== Tools
+
+It's just a simple tool to be able to run tests on C code without specific library.
+
+=== Usage
+
+A test need to be created in __./test__ folder.
+
+Is name should finish by __.test.c__ (ex: __square.test.c__)
+
+To compile and launch test __./test/TESTNAME.test.c__, execute:
+[source,sh]
+----
+. ./run.sh TESTNAME
+----
+
+To run all tests, execute:
+[source,sh]
+----
+. ./runAll.sh
+----
+
+This command just run all tests referenced in __runAll.sh__ script.
+There a report by test and there is no aggregation.
+
+=== Writing a test
+
+Here is an example of a test file:
+
+[source, c]
+----
+#include <stdio.h>
+#include "../include/square.h" <1>
+#include "../include/test.h" <2>
+
+TEST void square_5_should_be_25() { <3>
+    _assert(square(5) == 25); <4>
+}
+
+RUN_TESTS() <5>
+----
+<1> Include application to test.
+<2> Include test utilities and __#define__.
+<3> Start line by __TEST__ to indicate that it's a test.
+<4> Use ___assert__ to indicate a predicate that should be true.
+<5> Finish file by __RUN_TESTS()__, it will be replace by a __main()__.
+
+This file could be compile without any transformation, just to check that everything is right.
+__TEST__ and __RUN_TESTS() are just replaced by nothing in that case.
+
+To be able to run it, some transformations need to be done by a script (__run.sh__).
+
+=== How it's work
+
+The shell script __run.sh__ makes some transformation on a test file before executing it.
+
+First, the file is copied into __./progtest__ folder and __RUN_TESTS()__ is repllace by a generated __main()__.
+This __main()__ launch each test define in the file and display a result report.
+Tests to launch are all function with a line starting be __TEST__.
+
+Transformation is done using simple transformation (__sed__ command).
+
+Some commands are launch on a docker container:
+
+make all:: build all source files and test files.
+make test:: build all source files and only file test.c
+. ./objtest/TESTNAME.test.o:: run a test
+
+== Python and C
+
+.Command to execute on docker to add python-dev library.
+[source, sh]
+----
+apt-get update
+apt-get install python-dev
+----
+
+File __python/callPython.c__ contains some function that execute python script or use python file.
+
+To run example, execute script:
+
+[source, sh]
+----
+. ./run_py.sh
+----
+
+== References
+
+=== Unit Test
 
 link:http://eradman.com/posts/tdd-in-c.html[Test-Driven Development in C] Eric Radman - 2018
 
@@ -10,44 +100,8 @@ link:https://www.youtube.com/watch?v=z-uWt5wVVkU[You Can't Unit Test C, Right?] 
 
 link:https://www.youtube.com/watch?v=zW_HyDTPjO0[Writing unit tests for C code in Python] Alexander Steffen - EuroPython Conference - 2016 - 26"
 
+=== Python and C
 
-== Framework
+link:https://www.linuxjournal.com/article/8497[Embedding Python in Your C Programs] William Nagel - 2005
 
-To run a test, call
-
-[source,sh]
-----
-. ./run.sh TESTNAME
-----
-
-File executed will be ./test/TESTNAME.test.c
-
-This file is copied to file ./test/test.c.
-It's modified to add a generated main() method that launch all tests present in file.
-
-To reference a test method, the method declaration should start by TEST.
-
-[source, c]
-----
-TEST void square_5_should_be_25() {
-    _assert(square(5) == 25);
-}
-----
-
-
-File test.h contains some #DEFINE and method to execute a test and display result.
-This file need to be include to the test file.
-
-make all build all source files and test files.
-
-make test build all source files and only file test.c
-
-
-== Python
-
-apt-get update
-apt-get install python-dev
-
-
-PRO* C/C++: Release 12.1.0.2.0 Oracle
-Flux_bou
+link:https://medium.com/just-me-me-programming-life/python-c-and-symbols-4628fb71a257[Python, C and Symbols] Shady Atef - 2018

@@ -33,7 +33,6 @@ int runPythonScript() {
    Py_Finalize();
 }
 
-// See https://medium.com/just-me-me-programming-life/python-c-and-symbols-4628fb71a257
 // Run a python file with arguments.
 int runPythonFile(char *filename) {
 
