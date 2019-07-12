@@ -10,7 +10,6 @@ function onDocker() {
 #docker run -v $(pwd)/test:/sources -w /sources -t python_dev whoami;python --version;sudo apt install python-pip;pip install cffi;python ./test/myapp.test.py
 
 onDocker make clean
-onDocker make callPython
+onDocker make shared
 
-onDocker ./obj/callPython.o
-make
+onDocker python python/square_from_c.py

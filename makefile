@@ -55,6 +55,12 @@ callPython: $(OUT_PATH)/callPython.o
 $(OUT_PATH)/%.o: $(SRC_PATH)/%.c
 	$(CC) $(CFLAGS) -I/usr/include/python2.7 -lpython2.7 -o $@  $<
 
+#################
+
+shared: $(OUT_PATH)/myapp.so
+
+$(OUT_PATH)/%.so: $(SRC_PATH)/%.c
+	$(CC) $(CFLAGS) -fPIC -shared -o $@ $<
 
 
 clean:

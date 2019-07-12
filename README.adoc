@@ -85,8 +85,18 @@ To run example, execute script:
 
 [source, sh]
 ----
-. ./run_py.sh
+. ./run_c_call_py.sh
 ----
+
+File __python/square_from_c.py__ call function implemented with c code.
+
+To run example, execute script:
+
+[source, sh]
+----
+. ./run_py_call_c.sh
+----
+
 
 == References
 
@@ -105,3 +115,6 @@ link:https://www.youtube.com/watch?v=zW_HyDTPjO0[Writing unit tests for C code i
 link:https://www.linuxjournal.com/article/8497[Embedding Python in Your C Programs] William Nagel - 2005
 
 link:https://medium.com/just-me-me-programming-life/python-c-and-symbols-4628fb71a257[Python, C and Symbols] Shady Atef - 2018
+
+link:http://book.pythontips.com/en/latest/python_c_extension.html[Python C extensions] - http://book.pythontips.com
+
