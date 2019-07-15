@@ -1,8 +1,10 @@
 #!/bin/bash
 
+DOCKER_IMAGE=gcc_test
+
 function onDocker() {
     command=$@
-    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 $command
+    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp $DOCKER_IMAGE $command
 }
 
 #docker run -v $(pwd)/test:/sources -w /sources -t python_dev ls
@@ -18,4 +20,4 @@ echo ""
 #onDocker apt-get update;apt-get install python-dev;make callPython
 onDocker make callPython
 
-onDocker ./obj/callPython.o
+onDocker ./obj/callPython.prog.o

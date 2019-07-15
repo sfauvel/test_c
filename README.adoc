@@ -8,6 +8,13 @@ It's just a simple tool to be able to run tests on C code without specific libra
 
 === Usage
 
+First, buil docker image running:
+[source,sh]
+----
+. ./buildDockerImage.sh
+----
+
+
 A test need to be created in __./test__ folder.
 
 Is name should finish by __.test.c__ (ex: __square.test.c__)

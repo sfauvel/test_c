@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+DOCKER_IMAGE=gcc_test
 
 function write() {
     TEXT=$1
@@ -39,7 +40,7 @@ function build_test_file() {
 
 function onDocker() {
     command=$@
-    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp gcc:4.9 $command
+    docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp $DOCKER_IMAGE $command
 }
 
 rm -rf progtest
